@@ -46,6 +46,7 @@ def go(args):
     # Get the Random Forest configuration and update W&B
     with open(args.rf_config) as fp:
         rf_config = json.load(fp)
+        rf_config['max_features'] = args.max_features
     run.config.update(rf_config)
 
     # Fix the random seed for the Random Forest, so we get reproducible results
@@ -302,7 +303,12 @@ if __name__ == "__main__":
         help="Name for the output serialized model",
         required=True,
     )
-
+    parser.add_argument(
+            "--max_features",
+            help="Max features for RF",
+            default=0.5,
+            type=float
+        )
     args = parser.parse_args()
 
     go(args)
